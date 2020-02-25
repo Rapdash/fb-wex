@@ -1,4 +1,5 @@
-import firebaseApp from "firebase/app";
+import app from "firebase/app";
+import auth from "firebase/auth";
 
 const config = {
   apiKey: "AIzaSyBtVKtS5BC1D2AvHF-BZ5pRzSOQYGQHw4E",
@@ -11,4 +12,23 @@ const config = {
     measurementId: "G-TM9FXGRH95"
 }
 
-export const firebase = firebaseApp.initializeApp(config);
+export class Firebase {
+  constructor() {
+    app.initializeApp(config);
+
+    this.auth = app.auth();
+  }
+
+  createUser = (email, password) => 
+    this.auth.createUserWithEmailAndPassword(email, password);
+
+  signIn = (email, password) => 
+    this.auth.signInWithEmailAndPassword(email, password);
+
+  signOut = () => this.auth.signOut();
+
+  resetPassword = email => this.auth.sendPasswordResetEmail(email);
+
+  updatePassword = password =>
+    this.auth.currentUser.updatePassword(password);
+}
