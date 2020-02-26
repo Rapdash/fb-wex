@@ -1,5 +1,7 @@
+import { createContext } from "react";
 import app from "firebase/app";
-import auth from "firebase/auth";
+import "firebase/auth";
+import "firebase/firestore";
 
 const config = {
   apiKey: "AIzaSyBtVKtS5BC1D2AvHF-BZ5pRzSOQYGQHw4E",
@@ -11,6 +13,8 @@ const config = {
     appId: "1:217225872216:web:6995725f010e9f344f5b2d",
     measurementId: "G-TM9FXGRH95"
 }
+
+export const FirebaseContext = createContext(null);
 
 export class Firebase {
   constructor() {
