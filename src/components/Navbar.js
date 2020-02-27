@@ -5,9 +5,7 @@ import Nav from "react-bootstrap/Nav";
 
 const CustomNavbar = () => (
   <Navbar bg="primary" variant="dark" expand="lg">
-    <LinkContainer exact to="/">
-      <Navbar.Brand>The Water Agency Inc.</Navbar.Brand>
-    </LinkContainer>
+    <Navbar.Brand className="mb-0" as="h2">The Water Agency Inc.</Navbar.Brand>
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="mr-auto">
