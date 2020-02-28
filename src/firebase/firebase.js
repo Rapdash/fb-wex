@@ -21,6 +21,7 @@ export class Firebase {
     app.initializeApp(config);
 
     this.auth = app.auth();
+    this.db = app.firestore();
   }
 
   createUser = (email, password) => 
@@ -35,4 +36,8 @@ export class Firebase {
 
   updatePassword = password =>
     this.auth.currentUser.updatePassword(password);
+
+  user = uid => this.db.doc(`users/${uid}`);
+
+  users = () => this.db.collection('users');
 }

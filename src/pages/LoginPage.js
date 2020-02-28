@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import { Card, Row, Col, Form, Button } from "react-bootstrap";
 
 import { FirebaseContext } from "../firebase/firebase";
@@ -7,17 +7,16 @@ import { AuthUserContext } from "../firebase/authUser";
 
 export const LoginPage = () => {
   const Firebase = useContext(FirebaseContext);
-  const AuthUser = useContext(AuthUserContext);
+  const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  if (AuthUser) {
-    return <Redirect to="/listings" />;
-  }
+  const [error, setError] = useState("");
 
   const onSubmit = e => {
     e.preventDefault();
-    Firebase.signIn(email, password);
+    Firebase.signIn(email, password)
+      .then(() => history.push('/listings'))
+      .catch(err => setError(err.message))
   };
 
   return (
@@ -25,7 +24,7 @@ export const LoginPage = () => {
       <Col md={{ span: 6, offset: 3 }} lg={{ span: 4, offset: 4 }}>
         <Card>
           <Card.Header>
-            <Card.Title className="text-center display-4">Log In</Card.Title>
+            <Card.Title className="text-center display-4 m-0">Log In</Card.Title>
           </Card.Header>
           <Card.Body>
             <Form onSubmit={e => onSubmit(e)}>
@@ -51,9 +50,10 @@ export const LoginPage = () => {
                 Log In
               </Button>
             </Form>
+            <Card.Text className="text-center text-danger mt-4">{error}</Card.Text>
           </Card.Body>
           <Card.Footer className="text-right">
-            <Link to="/forgot-password">
+            <Link to="/password-reset">
               Forgot your password? Click Here To Reset It.
             </Link>
           </Card.Footer>
