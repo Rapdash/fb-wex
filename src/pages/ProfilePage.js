@@ -58,11 +58,35 @@ export const ProfilePage = () => {
   };
 
   if (error) {
-    return <h3 className="text-center mt-5">{error}</h3>
+    return <h3 className="text-center mt-5">{error}</h3>;
   }
 
   return (
     <>
+      <Row
+        className="py-2 bg-secondary"
+      >
+        <Col
+          xs={{ span: 6 }}
+          sm={{ span: 4, offset: 2 }}
+          md={{ span: 4, offset: 2 }}
+          lg={{ span: 3, offset: 3 }}
+        >
+          <Button block variant="primary" onClick={() => setModalOpen(true)}>
+            Change Password
+          </Button>
+        </Col>
+        <Col
+          xs={{ span: 6 }}
+          sm={{ span: 4 }}
+          md={{ span: 4 }}
+          lg={{ span: 3 }}
+        >
+          <Button block variant="danger" onClick={() => Firebase.signOut()}>
+            Log Out
+          </Button>
+        </Col>
+      </Row>
       <Row className="pt-5">
         <Col md={{ span: 6, offset: 3 }} lg={{ span: 4, offset: 4 }}>
           <Card>
@@ -121,31 +145,6 @@ export const ProfilePage = () => {
           </Card>
         </Col>
       </Row>
-      <Row
-        className="py-2 bg-secondary"
-        style={{ position: "fixed", bottom: 0, width: "100%" }}
-      >
-        <Col
-          xs={{ span: 6 }}
-          sm={{ span: 4, offset: 2 }}
-          md={{ span: 4, offset: 2 }}
-          lg={{ span: 3, offset: 3 }}
-        >
-          <Button block variant="primary" onClick={() => setModalOpen(true)}>
-            Change Password
-          </Button>
-        </Col>
-        <Col
-          xs={{ span: 6 }}
-          sm={{ span: 4 }}
-          md={{ span: 4 }}
-          lg={{ span: 3 }}
-        >
-          <Button block variant="danger" onClick={() => Firebase.signOut()}>
-            Log Out
-          </Button>
-        </Col>
-      </Row>
       <Modal show={modalOpen} onHide={() => setModalOpen(false)}>
         <Modal.Header>
           <Modal.Title className="mx-auto">Change Password</Modal.Title>
@@ -180,7 +179,9 @@ export const ProfilePage = () => {
               Confirm Password Change
             </Button>
             {confirmPassword !== newPassword && (
-              <Card.Text className="text-danger text-center mt-3 mb-0">Password & Password Confirmation Must Match</Card.Text>
+              <Card.Text className="text-danger text-center mt-3 mb-0">
+                Password & Password Confirmation Must Match
+              </Card.Text>
             )}
           </Form>
         </Modal.Body>
