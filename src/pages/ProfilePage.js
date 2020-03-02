@@ -87,7 +87,7 @@ export const ProfilePage = () => {
           </Button>
         </Col>
       </Row>
-      <Row className="pt-5">
+      <Row className="mt-3">
         <Col md={{ span: 6, offset: 3 }} lg={{ span: 4, offset: 4 }}>
           <Card>
             <Card.Header>
