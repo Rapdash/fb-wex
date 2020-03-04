@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 
 import { AuthUserContext } from "../firebase/authUser";
 import { FirebaseContext } from "../firebase/firebase";
-import { Row, Col, Card, ListGroup } from "react-bootstrap";
+import { Row, Col, Card, ListGroup, Button } from "react-bootstrap";
 
 export const ListingsPage = () => {
   const Firebase = useContext(FirebaseContext);
@@ -38,14 +38,39 @@ export const ListingsPage = () => {
   const renderListings = listings => {
     return listings.map((listing, index) => (
       <ListGroup.Item action key={index} className="text-center">
-        <strong>{listing?.offerVolume}AF at ${listing?.offerPrice}/AF</strong><br/>
+        <strong>
+          {listing?.offerVolume}AF at ${listing?.offerPrice}/AF
+        </strong>
+        <br />
         {listing?.waterType}
       </ListGroup.Item>
-    ))
-  }
+    ));
+  };
 
   return (
     <>
+      <Row className="py-2 bg-secondary">
+        <Col
+          xs={{ span: 6 }}
+          sm={{ span: 4, offset: 2 }}
+          md={{ span: 4, offset: 2 }}
+          lg={{ span: 3, offset: 3 }}
+        >
+          <Button block variant="primary" onClick={() => {}}>
+            Create Listing
+          </Button>
+        </Col>
+        <Col
+          xs={{ span: 6 }}
+          sm={{ span: 4 }}
+          md={{ span: 4 }}
+          lg={{ span: 3 }}
+        >
+          <Button block variant="dark" onClick={() => Firebase.signOut()}>
+            My Listing History
+          </Button>
+        </Col>
+      </Row>
       <Row className="pt-2">
         <Col md="6" lg={{ span: 5, offset: 1 }}>
           <Card>
@@ -55,9 +80,7 @@ export const ListingsPage = () => {
               </Card.Title>
             </Card.Header>
             <Card.Body>
-              <ListGroup>
-                {renderListings(myListings)}
-              </ListGroup>
+              <ListGroup>{renderListings(myListings)}</ListGroup>
             </Card.Body>
           </Card>
         </Col>
@@ -69,9 +92,7 @@ export const ListingsPage = () => {
               </Card.Title>
             </Card.Header>
             <Card.Body>
-              <ListGroup>
-                {renderListings(otherListings)}
-              </ListGroup>
+              <ListGroup>{renderListings(otherListings)}</ListGroup>
             </Card.Body>
           </Card>
         </Col>
