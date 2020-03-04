@@ -9,10 +9,40 @@ export const CreateListingModal = ({ modalOpen, setModalOpen }) => {
 
   const [partialAllowed, setPartialAllowed] = useState(false);
   const [listPrice, setListPrice] = useState("");
-  const [listVolume, setListVolume] = useState(null);
+  const [listVolume, setListVolume] = useState("");
+  const [minimumVolume, setMinimumVolume] = useState("")
+  const [waterType, setWaterType] = useState("Current Year Contract Water")
+  const [error, setError] = useState(null);
 
-  const onSubmit = e => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+    
+    // eslint-disable-next-line no-mixed-operators
+    if (!listPrice || !listVolume || !minimumVolume && partialAllowed) {
+      setError('Missing a Required Field.');
+      return;
+    }
+
+    if (!partialAllowed) {
+      setMinimumVolume(undefined);
+    }
+
+    const newDocData = {
+      active: true,
+      listPrice,
+      listVolume,
+      owner: authUser.uid,
+      // only adds minimum volume if partial purchases are allowed.
+      minimumVolume,
+      waterType
+    }
+
+    try {
+      await Firebase.listings().add(newDocData);
+      setModalOpen(false);
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
@@ -38,7 +68,7 @@ export const CreateListingModal = ({ modalOpen, setModalOpen }) => {
               placeholder="Volume For Sale (AF)"
               required
               type="number"
-              value={setListVolume}
+              value={listVolume}
               onChange={e => setListVolume(e.target.value)}
             ></Form.Control>
           </Form.Group>
@@ -49,16 +79,16 @@ export const CreateListingModal = ({ modalOpen, setModalOpen }) => {
                 placeholder="Minimum Sale Volume (AF)"
                 required
                 type="number"
-                value={listPrice}
-                onChange={e => setListPrice(e.target.value)}
+                value={minimumVolume}
+                onChange={e => setMinimumVolume(e.target.value)}
               ></Form.Control>
             </Form.Group>
           )}
           <Form.Group>
-            <Form.Label>Water Type (NYI)</Form.Label>
-            <Form.Control as="select">
-              <option>Current Year Contract Water</option>
-              <option>Other Water Type</option>
+            <Form.Label>Water Type</Form.Label>
+            <Form.Control as="select" onChange={e => setWaterType(e.target.value)}>
+              <option value="Current Year Contract Water">Current Year Contract Water</option>
+              <option value="Other Water Type">Other Water Type</option>
             </Form.Control>
           </Form.Group>
           <Button block variant="secondary" onClick={() => setPartialAllowed(!partialAllowed)}>
@@ -73,6 +103,8 @@ export const CreateListingModal = ({ modalOpen, setModalOpen }) => {
             Create Listing
           </Button>
         </Form>
+
+        {error && <h4 className="text-center text-danger mt-3 mb-0">{error}</h4>}
       </Modal.Body>
     </Modal>
   );
