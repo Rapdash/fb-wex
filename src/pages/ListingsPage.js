@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
+import { Row, Col, Card, ListGroup, Button } from "react-bootstrap";
 
 import { AuthUserContext } from "../firebase/authUser";
 import { FirebaseContext } from "../firebase/firebase";
-import { Row, Col, Card, ListGroup, Button } from "react-bootstrap";
+import { CreateListingModal } from "../components/CreateListingModal";
 
 export const ListingsPage = () => {
   const Firebase = useContext(FirebaseContext);
@@ -10,6 +11,7 @@ export const ListingsPage = () => {
 
   const [myListings, setMyListings] = useState([]);
   const [otherListings, setOtherListings] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const fn = async () => {
@@ -39,8 +41,11 @@ export const ListingsPage = () => {
     return listings.map((listing, index) => (
       <ListGroup.Item action key={index} className="text-center">
         <strong>
-          {listing?.offerVolume}AF at ${listing?.offerPrice}/AF
+          {listing?.listVolume}AF at ${listing?.listPrice}/AF
         </strong>
+        <br />
+        {listing.minimumVolume && `Minimum Purchase: ${listing.minimumVolume}AF`}
+        {!listing.minimumVolume && `No Partial Purchases`}
         <br />
         {listing?.waterType}
       </ListGroup.Item>
@@ -56,7 +61,7 @@ export const ListingsPage = () => {
           md={{ span: 4, offset: 2 }}
           lg={{ span: 3, offset: 3 }}
         >
-          <Button block variant="primary" onClick={() => {}}>
+          <Button block variant="primary" onClick={() => setModalOpen(true)}>
             Create Listing
           </Button>
         </Col>
@@ -66,8 +71,8 @@ export const ListingsPage = () => {
           md={{ span: 4 }}
           lg={{ span: 3 }}
         >
-          <Button block variant="dark" onClick={() => Firebase.signOut()}>
-            My Listing History
+          <Button block variant="dark" onClick={() => {}}>
+            My Listing History (NYI)
           </Button>
         </Col>
       </Row>
@@ -97,6 +102,7 @@ export const ListingsPage = () => {
           </Card>
         </Col>
       </Row>
+      <CreateListingModal setModalOpen={setModalOpen} modalOpen={modalOpen} />
     </>
   );
 };
