@@ -7,6 +7,7 @@ import { FirebaseContext } from "./firebase/firebase";
 import { AuthUserContext } from "./firebase/authUser";
 import { PasswordResetPage } from "./pages/PasswordResetPage";
 import { ProfilePage } from "./pages/ProfilePage";
+import { ListingsPage } from "./pages/ListingsPage";
 import { PrivateRoute } from "./components/PrivateRoute";
 
 export const App = () => {
@@ -23,10 +24,11 @@ export const App = () => {
      <AuthUserContext.Provider value={authUser}>
       <Router>
         <Layout>
-          <Route path="/" render={() => <Redirect to="/login" />} />
-          <Route path="/login" component={LoginPage} />
-          <Route path="/password-reset" component={PasswordResetPage} />
-          <PrivateRoute path="/profile" component={ProfilePage} />
+          <Route path="/" exact render={() => <Redirect to="/login" />} />
+          <Route path="/login" exact component={LoginPage} />
+          <Route path="/password-reset" exact component={PasswordResetPage} />
+          <PrivateRoute path="/listings" exact component={ListingsPage} />
+          <PrivateRoute path="/profile" exact component={ProfilePage} />
         </Layout>
       </Router>
     </AuthUserContext.Provider>
