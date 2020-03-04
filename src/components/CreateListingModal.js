@@ -32,7 +32,6 @@ export const CreateListingModal = ({ modalOpen, setModalOpen }) => {
       listPrice,
       listVolume,
       owner: authUser.uid,
-      // only adds minimum volume if partial purchases are allowed.
       minimumVolume,
       waterType
     }
